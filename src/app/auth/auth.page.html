@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> Login </ion-title>
+    <!-- <ion-title *ngIf="!isLogin">{{ isUser ? 'Register as User' : 'Register as Owner'}}</ion-title> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- <ion-segment value="user" (ionChange)="userOwnerChange($event)">
+    <ion-segment-button value="user">User</ion-segment-button>
+    <ion-segment-button value="owner">Shop Owner</ion-segment-button>
+  </ion-segment> -->
+
+  <form #form="ngForm" (ngSubmit)="onLogin(form)">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="4" offset-sm="4">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">E-mail</ion-label>
+              <ion-input type="email" ngModel name="email" #emailctrl="ngModel" email required></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!emailctrl.valid && emailctrl.touched" lines="none">
+              <ion-label>Should be a valid Email address</ion-label>
+
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input type="password" ngModel name="password" #passwordctrl="ngModel" name="password" required
+                minlength="6"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!passwordctrl.valid && passwordctrl.touched" lines="none">
+              <ion-label>Enter a valid Password</ion-label>
+
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+
+
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="4" offset-sm="4">
+
+          <ion-button type="button" clolor="primary"  fill="clear" expand="block"
+            routerLink='/auth/register' routerDirection="forward">Switch To Register
+          </ion-button>
+          <ion-button type="submit" clolor="primary"  expand="block" [disabled]="!form.valid">
+            Login
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>

@@ -1,22 +1,40 @@
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
+import { AuthGuardGuard } from "./auth/auth-guard.guard";
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    path: "",
+    redirectTo: "owner",
+    pathMatch: "full",
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: "auth",
+    loadChildren: () =>
+      import("./auth/auth.module").then((m) => m.AuthPageModule),
+  },
+  {
+    path: "user",
+    loadChildren: () =>
+      import("./user/user.module").then((m) => m.UserPageModule),
+    canLoad: [AuthGuardGuard],
+  },
+  {
+    path: "owner",
+    loadChildren: () =>
+      import("./owner/owner.module").then((m) => m.OwnerPageModule),
+    canLoad: [AuthGuardGuard],
+  },
+  {
+    path: 'popover-component',
+    loadChildren: () => import('./popover-component/popover-component.module').then( m => m.PopoverComponentPageModule)
   },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

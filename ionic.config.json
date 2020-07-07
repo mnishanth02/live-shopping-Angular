@@ -1,5 +1,7 @@
 {
   "name": "live-shopping",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

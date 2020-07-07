@@ -1,0 +1,161 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <!-- <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth"></ion-back-button>
+    </ion-buttons> -->
+    <ion-title> Register </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- <ion-segment value="user" (ionChange)="userOwnerChange($event)">
+    <ion-segment-button value="user">User</ion-segment-button>
+    <ion-segment-button value="owner">Shop Owner</ion-segment-button>
+  </ion-segment> -->
+
+  <form #registerForm="ngForm" (ngSubmit)="onUserRegister(registerForm)">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="4" offset-sm="4">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Full Name</ion-label>
+              <ion-input type="text" ngModel name="fullName" #nameCtrl="ngModel" required></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!nameCtrl.valid && nameCtrl.touched" lines="none">
+              <ion-label>Enter a valid Name</ion-label>
+
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Mobile No</ion-label>
+              <ion-input type="number" min="6" max="10" ngModel name="mobileNo" #mobileNoCtrl="ngModel" required>
+              </ion-input>
+            </ion-item>
+            <ion-item *ngIf="!mobileNoCtrl.valid && mobileNoCtrl.touched" lines="none">
+              <ion-label>Enter a valid Number</ion-label>
+
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">E-mail</ion-label>
+              <ion-input type="email" ngModel name="email" #emailctrl="ngModel" email required></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!emailctrl.valid && emailctrl.touched" lines="none">
+              <ion-label>Enter a valid Email address</ion-label>
+
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input type="password" ngModel name="password" #passwordctrl="ngModel" name="password" required
+                minlength="7"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!passwordctrl.valid && passwordctrl.touched" lines="none">
+              <ion-label>Enter a valid Password</ion-label>
+
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Role</ion-label>
+              <ion-select value="user" ngModel name="role" required interface="action-sheet">
+                <ion-select-option value="user">User</ion-select-option>
+                <ion-select-option value="owner">Shop Owner</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+
+          </ion-list>
+        </ion-col>
+
+
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="4" offset-sm="4">
+
+          <ion-button type="button" clolor="primary" fill="clear" expand="block" routerLink='/auth'
+            routerDirection="back">
+            Switch To Login
+          </ion-button>
+          <ion-button type="submit" clolor="primary" expand="block" [disabled]="!registerForm.valid">
+            Register
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+  <!-- <form #ownerForm="ngForm" (ngSubmit)="onOwnerRegister(ownerForm)" *ngIf="!isUser">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="4" offset-sm="4">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Shop Name</ion-label>
+              <ion-input type="text" ngModel name="shopName" #shopNameCtrl="ngModel" required></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!shopNameCtrl.valid && shopNameCtrl.touched" lines="none">
+              <ion-label>Enter a valid Shop Name</ion-label>
+
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Mobile No</ion-label>
+              <ion-input type="number" min="6" max="10" ngModel name="mobileNo" #mobileNoCtrl="ngModel" required>
+              </ion-input>
+            </ion-item>
+            <ion-item *ngIf="!mobileNoCtrl.valid && mobileNoCtrl.touched" lines="none">
+              <ion-label>Enter a valid Number</ion-label>
+
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">E-mail</ion-label>
+              <ion-input type="email" ngModel name="email" #emailctrl="ngModel" email required></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!emailctrl.valid && emailctrl.touched" lines="none">
+              <ion-label>Enter a valid Email address</ion-label>
+
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input type="password" ngModel name="password" #passwordctrl="ngModel" name="password" required
+                minlength="6"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!passwordctrl.valid && passwordctrl.touched" lines="none">
+              <ion-label>Enter a valid Password</ion-label>
+
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Shop Type</ion-label>
+              <ion-input type="text" ngModel name="shpopType" #shpopTypectrl="ngModel" name="shpopType" required></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!shpopTypectrl.valid && shpopTypectrl.touched" lines="none">
+              <ion-label>Enter a valid Shop Type</ion-label>
+
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Address</ion-label>
+              <ion-input type="text" name="addressLine1" placeholder="Address Line 1"></ion-input>
+              <ion-input type="text" name="addressLine2" placeholder="Address Line 2"></ion-input>
+              <ion-input type="text" name="state" placeholder="State"></ion-input>
+              <ion-input type="text" name="country" placeholder="Country"></ion-input>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+
+
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="4" offset-sm="4">
+
+          <ion-button type="button" clolor="primary" *ngIf="!isLoading" fill="clear" expand="block" routerLink='/auth'>
+            Switch To Login
+          </ion-button>
+          <ion-button type="submit" clolor="primary" *ngIf="!isLoading" expand="block" [disabled]="!ownerForm.valid">
+            {{ isUser ? 'User Register' : 'Owner Register'}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form> -->
+</ion-content>
