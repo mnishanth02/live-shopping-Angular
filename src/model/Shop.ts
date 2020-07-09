@@ -1,3 +1,5 @@
+import { ShopLocation } from ".././model/Location.model";
+
 export class Shop {
   constructor(
     public id: string,
@@ -5,6 +7,7 @@ export class Shop {
     public email: string,
     public address: string,
     public shopType: string,
-    public shopImgUrl: string
+    public shopImgUrl: string,
+    public shopLocation: ShopLocation
   ) {}
 }

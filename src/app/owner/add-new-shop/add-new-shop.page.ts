@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { OwnerService } from "../owner.service";
 import { Router } from "@angular/router";
 import { Shop } from "src/model/Shop";
+import { ShopLocation } from "src/model/Location.model";
 
 // export interface Shop {
 //   id: string;
@@ -43,6 +44,9 @@ export class AddNewShopPage implements OnInit {
         updateOn: "blur",
         // validators: [Validators.required],
       }),
+      location: new FormControl(null, {
+        validators: [Validators.required],
+      }),
     });
   }
 
@@ -53,7 +57,8 @@ export class AddNewShopPage implements OnInit {
       this.form.value.email,
       this.form.value.address,
       this.form.value.shopType,
-      this.form.value.shopImgUrl
+      this.form.value.shopImgUrl,
+      this.form.value.location
     );
 
     // const newShop: Shop = {
@@ -69,5 +74,11 @@ export class AddNewShopPage implements OnInit {
       this.form.reset();
       this.router.navigate(["/owner/tabs/shops"]);
     });
+  }
+
+  onImagePicked(imageData: string) {}
+
+  onLocationPicked(location: ShopLocation) {
+    this.form.patchValue({ location: location });
   }
 }

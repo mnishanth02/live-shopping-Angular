@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   // url: "http://localhost:3000",
   url: "https://nm-live-shopping-node.herokuapp.com",
+  googleMapsAPIKey: "AIzaSyAY7XIbfXxuZKmdALblkcD9iyoY1PR6CpU",
 };
 
 /*

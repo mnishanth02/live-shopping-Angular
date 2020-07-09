@@ -7,6 +7,7 @@ import { AlertController } from "@ionic/angular";
 import { BehaviorSubject, of } from "rxjs";
 import { Shop } from "src/model/Shop";
 import { ShopProduct } from "src/model/ShopProduct";
+import { ShopLocation } from "src/model/Location.model";
 
 interface ShopData {
   address: string;
@@ -16,6 +17,7 @@ interface ShopData {
   shopName: string;
   shopType: string;
   _id: string;
+  shopLocation: ShopLocation;
 }
 
 interface ShopProductDate {
@@ -82,7 +84,8 @@ export class OwnerService {
               shop.email,
               shop.address,
               shop.shopType,
-              shop.shopImgUrl
+              shop.shopImgUrl,
+              shop.shopLocation
             )
           );
         });
@@ -104,7 +107,8 @@ export class OwnerService {
           shopData.email,
           shopData.address,
           shopData.shopType,
-          shopData.shopImgUrl
+          shopData.shopImgUrl,
+          shopData.shopLocation
         );
       })
     );
@@ -132,6 +136,7 @@ export class OwnerService {
           address: oldShop.address,
           shopType: oldShop.shopType,
           shopImgUrl: oldShop.shopImgUrl,
+          shopLocation: oldShop.shopLocation,
         };
         return (
           this.http.put<ShopData>(`${this.url}/api/shop/edit/${shop.id}`, {
@@ -147,7 +152,8 @@ export class OwnerService {
 
   // *************Product*******************
 
-  addNewProduct(product: ShopProduct) {  // need to send Shop Id
+  addNewProduct(product: ShopProduct) {
+    // need to send Shop Id
     console.log(product);
     let generatedProductId;
     return this.http
