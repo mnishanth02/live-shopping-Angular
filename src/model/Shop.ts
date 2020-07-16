@@ -1,13 +1,13 @@
-import { ShopLocation } from ".././model/Location.model";
+import { ShopLocationI } from ".././model/Location.model";
+import { SafeUrl } from "@angular/platform-browser";
 
 export class Shop {
   constructor(
     public id: string,
     public shopName: string,
     public email: string,
-    public address: string,
     public shopType: string,
-    public shopImgUrl: string,
-    public shopLocation: ShopLocation
+    public shopImage: string | File,
+    public location: ShopLocationI
   ) {}
 }

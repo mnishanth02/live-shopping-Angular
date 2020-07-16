@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  url: "https://nm-live-shopping-node.herokuapp.com",
+  googleMapsAPIKey: "AIzaSyDxpGlJORVlnE7TccYacuia3ISQMZpSPTc",
 };

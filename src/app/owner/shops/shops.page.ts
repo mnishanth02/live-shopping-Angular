@@ -5,6 +5,7 @@ import { OwnerService } from "../owner.service";
 import { Subscription } from "rxjs";
 import { Router } from "@angular/router";
 import { Shop } from "src/model/Shop";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-shops",
@@ -18,17 +19,19 @@ export class ShopsPage implements OnInit, OnDestroy {
   constructor(
     private popover: PopoverController,
     private ownerService: OwnerService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
     this.subs = this.ownerService.allShops.subscribe((shops) => {
       this.loadedShops = shops;
+      console.log(this.loadedShops);
     });
+    this.ownerService.fetchShops().subscribe();
   }
 
   ionViewWillEnter() {
-    this.ownerService.fetchShops().subscribe();
+    
   }
 
   async createPopover(ev) {
@@ -55,6 +58,7 @@ export class ShopsPage implements OnInit, OnDestroy {
     this.router.navigate(["/", "owner", "tabs", "shops", shopId]);
     slidingItem.close();
   }
+
 
   ngOnDestroy() {
     if (this.subs) {

@@ -1,9 +1,9 @@
-export interface Coordinates {
+export interface CoordinatesI {
   lat: number;
   lng: number;
 }
 
-export interface ShopLocation extends Coordinates {
+export interface ShopLocationI extends CoordinatesI {
   address: string;
   staticMapImageUrl: string;
 }

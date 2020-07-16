@@ -22,7 +22,9 @@
 
             <ion-item [routerLink]="['/', 'owner', 'tabs', 'shops', 'products', shop.id]" detail>
               <ion-thumbnail slot="start">
-                <ion-img [src]="shop.shopImgUrl"></ion-img>
+                <ion-img [src]="shop.shopImage"></ion-img>
+
+
               </ion-thumbnail>
               <ion-label>
                 <h1>{{shop.shopName}}</h1>
@@ -37,7 +39,7 @@
                 <ion-icon name="create" slot="icon-only"></ion-icon>
               </ion-item-option>
               <ion-item-option color="secondary" (click)="onViewShop(shop.id, slidingItem)">
-                <ion-icon name="create" slot="icon-only"></ion-icon>
+                <ion-icon name="eye" slot="icon-only"></ion-icon>
               </ion-item-option>
             </ion-item-options>
           </ion-item-sliding>

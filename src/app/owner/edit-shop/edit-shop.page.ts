@@ -1,17 +1,17 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { OwnerService } from "../owner.service";
 import { NavController } from "@ionic/angular";
-import { Shop } from 'src/model/Shop';
+import { Shop } from "src/model/Shop";
 
 @Component({
   selector: "app-edit-shop",
   templateUrl: "./edit-shop.page.html",
   styleUrls: ["./edit-shop.page.scss"],
 })
-export class EditShopPage implements OnInit {
+export class EditShopPage implements OnInit, OnDestroy {
   shop: Shop;
   shopId: string;
   shopForm: FormGroup;
@@ -21,7 +21,6 @@ export class EditShopPage implements OnInit {
     private route: ActivatedRoute,
     private ownerService: OwnerService,
     private navCtrl: NavController,
-    private router: Router
   ) {}
 
   ngOnInit() {
@@ -42,7 +41,7 @@ export class EditShopPage implements OnInit {
               updateOn: "blur",
               validators: [Validators.required],
             }),
-            address: new FormControl(this.shop.address, {
+            location: new FormControl(this.shop.location, {
               updateOn: "blur",
               validators: [Validators.required],
             }),
@@ -54,12 +53,18 @@ export class EditShopPage implements OnInit {
               updateOn: "blur",
               validators: [Validators.required],
             }),
-            shopImgUrl: new FormControl(this.shop.shopImgUrl, {
+            shopImgUrl: new FormControl(this.shop.shopImage, {
               updateOn: "blur",
               validators: [Validators.required],
             }),
           });
         });
     });
+  }
+
+  ngOnDestroy() {
+    if (this.shopSubs) {
+      this.shopSubs.unsubscribe();
+    }
   }
 }

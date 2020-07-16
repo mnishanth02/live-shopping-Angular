@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { SegmentChangeEventDetail } from "@ionic/core";
+import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { AuthService } from "../auth.service";
 import { LoadingController, AlertController } from "@ionic/angular";
@@ -34,41 +33,20 @@ export class RegisterPage implements OnInit {
     const password = form.value.password;
     const role = form.value.role;
 
-    this.loadingCtrl
-      .create({
-        keyboardClose: true,
-        message: "Registering...",
-      })
-      .then((loadEl) => {
-        loadEl.present();
-
-        this.authService
-          .userRegister(fullName, mobileNo, email, password, role)
-          .subscribe(
-            () => {
-              loadEl.dismiss();
-              console.log("logg in success full");
-              // this.router.navigateByUrl("/auth");
-              this.authService.userLogin(email, password).subscribe();
-            },
-            (error) => {
-              loadEl.dismiss();
-              console.log(error);
-            }
-          );
-      });
+    this.authService
+      .userRegister(fullName, mobileNo, email, password, role)
+      .subscribe(
+        () => {
+          console.log("registered in success full");
+          this.authService.userLogin(email, password).subscribe();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   onOwnerRegister(form: NgForm) {
     console.log(form);
-  }
-
-  showAlert(msg) {
-    let alert = this.alertController.create({
-      message: msg,
-      header: "Info",
-      buttons: ["OK"],
-    });
-    alert.then((alert) => alert.present());
   }
 }

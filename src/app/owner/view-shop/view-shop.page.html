@@ -8,12 +8,13 @@
   <ion-grid>
     <ion-row>
       <ion-col size="6" offset-sm="3">
-        <p>{{loadedShop.shopLocation.address}}</p>
+        <p>{{loadedShop.location.address}}</p>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="6" offset-sm="3" class="ion-no-padding">
-        <ion-img (click)="onShowFullmap()" role="button" [src]="loadedShop.shopLocation.staticMapImageUrl" class="location-image"> </ion-img>
+        <ion-img (click)="onShowFullmap()" role="button" [src]="loadedShop.location.staticMapImageUrl"
+          class="location-image"> </ion-img>
       </ion-col>
     </ion-row>
   </ion-grid>

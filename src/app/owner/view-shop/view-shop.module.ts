@@ -1,22 +1,22 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from "@ionic/angular";
 
-import { ViewShopPageRoutingModule } from './view-shop-routing.module';
+import { ViewShopPageRoutingModule } from "./view-shop-routing.module";
 
-import { ViewShopPage } from './view-shop.page';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { ViewShopPage } from "./view-shop.page";
+import { SharedModule } from "src/app/shared/shared.module";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SharedModule
-    ViewShopPageRoutingModule
+    SharedModule,
+    ViewShopPageRoutingModule,
   ],
-  declarations: [ViewShopPage]
+  declarations: [ViewShopPage],
 })
 export class ViewShopPageModule {}

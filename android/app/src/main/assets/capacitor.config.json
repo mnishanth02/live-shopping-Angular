@@ -9,5 +9,6 @@
       "launchShowDuration": 0
     }
   },
+  "linuxAndroidStudioPath": "/home/mnishanth02/Documents/software/android-studio/bin/studio.sh",
   "cordova": {}
 }

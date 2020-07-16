@@ -20,14 +20,21 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    if (req.headers.get("skip")) {
+      let newClone = req.clone({
+        headers: req.headers.delete("skip"),
+      });
+      return next.handle(newClone);
+    }
     let tokenPromise = this.authService.accesstoken();
+    // "Content-Type": "application/json",
 
     return from(tokenPromise).pipe(
       mergeMap((token) => {
         let authReq = req.clone({
           setHeaders: {
             Accept: "application/json",
-            "Content-Type": "application/json",
+            enctype: "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
         });

@@ -81,7 +81,6 @@ export class AuthService {
     };
     return this.http.post(`${this.url}/api/user/register`, credentials).pipe(
       catchError((e) => {
-        this.showAlert(e.error.msg);
         throw new Error(e);
       })
     );
@@ -94,26 +93,22 @@ export class AuthService {
     };
 
     return this.http.post(`${this.url}/api/user/login`, credentials).pipe(
-      tap(
-        (res) => {
-          this.storage.set(TOKEN_KEY, res["token"]);
-          this.storage.set(USER, res["user"]);
-          const userTemp = res["user"];
-          this._user = {
-            email: userTemp.email,
-            fullName: userTemp.fullName,
-            mobileNumber: userTemp.mobileNumber,
-            role: userTemp.role,
-          };
+      tap((res) => {
+        this.storage.set(TOKEN_KEY, res["token"]);
+        this.storage.set(USER, res["user"]);
+        const userTemp = res["user"];
+        this._user = {
+          email: userTemp.email,
+          fullName: userTemp.fullName,
+          mobileNumber: userTemp.mobileNumber,
+          role: userTemp.role,
+        };
 
-          // this.user = this.helper.decodeToken(res["token"]);
-          console.log("user Decoded from Token : " + this.user);
-          this.authenticationState.next(true);
-        },
-        (e) => this.showAlert(e.error)
-      ),
+        // this.user = this.helper.decodeToken(res["token"]);
+        console.log("user Decoded from Token : " + this.user);
+        this.authenticationState.next(true);
+      }),
       catchError((e) => {
-        this.showAlert(e.error);
         throw new Error(e);
       })
     );
@@ -133,13 +128,5 @@ export class AuthService {
 
   isAuthenticated() {
     return this.authenticationState.value;
-  }
-  showAlert(msg) {
-    let alert = this.alertController.create({
-      message: msg,
-      header: "Error",
-      buttons: ["OK"],
-    });
-    alert.then((alert) => alert.present());
   }
 }

@@ -58,7 +58,7 @@ const routes: Routes = [
               ),
           },
           {
-            path: "new",
+            path: "new/:shopId",
             loadChildren: () =>
               import("./add-new-product/add-new-product.module").then(
                 (m) => m.AddNewProductPageModule
@@ -69,6 +69,13 @@ const routes: Routes = [
             loadChildren: () =>
               import("./edit-product/edit-product.module").then(
                 (m) => m.EditProductPageModule
+              ),
+          },
+          {
+            path: ":productId",
+            loadChildren: () =>
+              import("./view-product/view-product.module").then(
+                (m) => m.ViewProductPageModule
               ),
           },
         ],

@@ -50,19 +50,5 @@ export class AppComponent {
         }
       });
     });
-
-    // this.authService.userSubject.subscribe((user) => {
-    //   if (this.authService.isAuthenticated()) {
-    //     if (user.user?.role === "user") {
-    //       this.router.navigate(["user"]);
-    //     } else if (user.user?.role === "owner") {
-    //       this.router.navigate(["owner"]);
-    //     } else {
-    //       this.router.navigate(["auth"]);
-    //     }
-    //   } else {
-    //     this.router.navigate(["auth"]);
-    //   }
-    // });
   }
 }

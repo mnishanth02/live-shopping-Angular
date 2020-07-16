@@ -3,31 +3,32 @@ import { HttpClient } from "@angular/common/http";
 
 import { environment } from "../../environments/environment";
 import { switchMap, take, tap, map } from "rxjs/operators";
-import { AlertController } from "@ionic/angular";
 import { BehaviorSubject, of } from "rxjs";
 import { Shop } from "src/model/Shop";
-import { ShopProduct } from "src/model/ShopProduct";
-import { ShopLocation } from "src/model/Location.model";
+import { ShopProduct } from "../../model/ShopProduct";
+import { ShopLocationI } from "../../model/Location.model";
+import { DomSanitizer } from "@angular/platform-browser";
 
 interface ShopData {
-  address: string;
+  _id: string;
+  shopName: string;
   email: string;
   owner: string;
-  shopImgUrl: string;
-  shopName: string;
+  shopImage: string;
   shopType: string;
-  _id: string;
-  shopLocation: ShopLocation;
+  location: ShopLocationI;
 }
 
 interface ShopProductDate {
   _id: string;
+  shopId: string;
   productName: string;
   productDesc: string;
   productKeyword: string[];
   price: number;
   available: number;
   units: string;
+  productImage: string;
 }
 
 @Injectable({
@@ -38,10 +39,7 @@ export class OwnerService {
   private _shops = new BehaviorSubject<Shop[]>([]);
   private _shopProducts = new BehaviorSubject<ShopProduct[]>([]);
 
-  constructor(
-    private http: HttpClient,
-    private alertController: AlertController
-  ) {}
+  constructor(private http: HttpClient, private sanitization: DomSanitizer) {}
 
   get allShops() {
     return this._shops.asObservable();
@@ -53,22 +51,32 @@ export class OwnerService {
 
   // *************Shop*******************
   addNewShop(shop: Shop) {
-    console.log(shop);
-    let generatedShopId;
-    return this.http.post(`${this.url}/api/shop/register`, shop).pipe(
+    let formData = new FormData();
+    formData.append("shopName", shop.shopName);
+    formData.append("email", shop.email);
+    formData.append("shopImage", shop.shopImage as File);
+    formData.append("shopType", shop.shopType);
+    formData.append("location", JSON.stringify(shop.location));
+    console.log(formData);
+
+    let newShop: Shop;
+    return this.http.post(`${this.url}/api/shop/register`, formData).pipe(
       switchMap((resData) => {
-        generatedShopId = resData["_id"];
+        const newShopObj = resData["newShop"];
+        newShop = new Shop(
+          newShopObj["_id"],
+          newShopObj["shopName"],
+          newShopObj["email"],
+          newShopObj["shopType"],
+          newShopObj["shopImage"],
+          newShopObj["location"]
+        );
         return this.allShops;
       }),
       take(1),
       tap((shops) => {
-        shop.id = generatedShopId;
-        this._shops.next(shops.concat(shop));
+        this._shops.next(shops.concat(newShop));
       })
-      // catchError((e) => {
-      //   this.showAlert(e.error);
-      //   throw new Error(e);
-      // })
     );
   }
 
@@ -82,10 +90,9 @@ export class OwnerService {
               shop._id,
               shop.shopName,
               shop.email,
-              shop.address,
               shop.shopType,
-              shop.shopImgUrl,
-              shop.shopLocation
+              shop.shopImage,
+              shop.location
             )
           );
         });
@@ -105,10 +112,9 @@ export class OwnerService {
           shopData._id,
           shopData.shopName,
           shopData.email,
-          shopData.address,
           shopData.shopType,
-          shopData.shopImgUrl,
-          shopData.shopLocation
+          shopData.shopImage,
+          shopData.location
         );
       })
     );
@@ -133,10 +139,9 @@ export class OwnerService {
           id: oldShop.id,
           shopName: oldShop.shopName,
           email: oldShop.email,
-          address: oldShop.address,
           shopType: oldShop.shopType,
-          shopImgUrl: oldShop.shopImgUrl,
-          shopLocation: oldShop.shopLocation,
+          shopImage: oldShop.shopImage,
+          location: oldShop.location,
         };
         return (
           this.http.put<ShopData>(`${this.url}/api/shop/edit/${shop.id}`, {
@@ -153,20 +158,44 @@ export class OwnerService {
   // *************Product*******************
 
   addNewProduct(product: ShopProduct) {
-    // need to send Shop Id
+    let formData = new FormData();
+    formData.append("productName", product.productName);
+    formData.append("productDesc", product.productDesc);
+    formData.append("productKeyword", product.productKeyword.toString());
+    formData.append("available", product.available.toString());
+    formData.append("price", product.price.toString());
+    formData.append("productImage", product.productImage as File);
+    formData.append("shopId", product.shopId);
+
+    console.log(formData);
+
     console.log(product);
-    let generatedProductId;
+    let productNew: ShopProduct;
     return this.http
-      .post<ShopProductDate>(`${this.url}/api/shop/addProduct`, product.id)
+      .post<ShopProductDate>(
+        `${this.url}/api/shop/addProduct/${product.shopId}`,
+        formData
+      )
       .pipe(
         switchMap((resData) => {
-          generatedProductId = resData._id;
+          console.log(resData);
+          const newProduct = resData["newProduct"];
+          productNew = new ShopProduct(
+            newProduct._id,
+            newProduct.shopId,
+            newProduct.productName,
+            newProduct.productDesc,
+            newProduct.productKeyword,
+            newProduct.price,
+            newProduct.available,
+            newProduct.units,
+            newProduct.productImage
+          );
           return this.allShopProducts;
         }),
         take(1),
         tap((products) => {
-          product.id = generatedProductId;
-          this._shopProducts.next(products.concat(product));
+          this._shopProducts.next(products.concat(productNew));
         })
       );
   }
@@ -176,17 +205,19 @@ export class OwnerService {
       .get<ShopProductDate[]>(`${this.url}/api/shop/allProducts/${shopId}`)
       .pipe(
         map((resList) => {
-          const productsArr: ShopProduct[] = [];
+          let productsArr: ShopProduct[] = [];
           resList.map((product) => {
             productsArr.push(
               new ShopProduct(
                 product._id,
+                product.shopId,
                 product.productName,
                 product.productDesc,
                 product.productKeyword,
                 product.price,
                 product.available,
-                product.units
+                product.units,
+                product.productImage
               )
             );
           });
@@ -206,12 +237,14 @@ export class OwnerService {
         map((shopData) => {
           return new ShopProduct(
             shopData._id,
+            shopData.shopId,
             shopData.productName,
             shopData.productDesc,
             shopData.productKeyword,
             shopData.price,
             shopData.available,
-            shopData.units
+            shopData.units,
+            shopData.productImage
           );
         })
       );

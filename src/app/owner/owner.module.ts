@@ -9,12 +9,7 @@ import { OwnerPageRoutingModule } from "./owner-routing.module";
 import { OwnerPage } from "./owner.page";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    OwnerPageRoutingModule,
-  ],
+  imports: [CommonModule, FormsModule, IonicModule, OwnerPageRoutingModule],
   declarations: [OwnerPage],
 })
 export class OwnerPageModule {}
