@@ -21,7 +21,6 @@ export class ProductsPage implements OnInit, OnDestroy {
   private subs: Subscription;
   currentShopId: string;
 
-  fromPage: string;
   constructor(
     private ownerService: OwnerService,
     private route: ActivatedRoute,

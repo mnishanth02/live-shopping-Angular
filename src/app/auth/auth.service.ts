@@ -80,6 +80,21 @@ export class AuthService {
       role,
     };
     return this.http.post(`${this.url}/api/user/register`, credentials).pipe(
+      tap(res => {
+        this.storage.set(TOKEN_KEY, res["token"]);
+        this.storage.set(USER, res["user"]);
+        const userTemp = res["user"];
+        this._user = {
+          email: userTemp.email,
+          fullName: userTemp.fullName,
+          mobileNumber: userTemp.mobileNumber,
+          role: userTemp.role,
+        };
+
+        // this.user = this.helper.decodeToken(res["token"]);
+        console.log("user Decoded from Token : " + this.user);
+        this.authenticationState.next(true);
+      }),
       catchError((e) => {
         throw new Error(e);
       })

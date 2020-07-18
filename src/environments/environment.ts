@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  // url: "http://localhost:3000", // local
+  url: "http://localhost:3000", // local
   // url: "https://nm-live-shopping-node.herokuapp.com", // Heruko
-  url: "https://live-shopping-repo.eu-gb.mybluemix.net", //IBM
+  // url: "https://live-shopping-repo.eu-gb.mybluemix.net", //IBM
   googleMapsAPIKey: "AIzaSyDxpGlJORVlnE7TccYacuia3ISQMZpSPTc",
 
 };

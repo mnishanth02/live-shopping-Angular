@@ -7,7 +7,6 @@ import { BehaviorSubject, of } from "rxjs";
 import { Shop } from "src/model/Shop";
 import { ShopProduct } from "../../model/ShopProduct";
 import { ShopLocationI } from "../../model/Location.model";
-import { DomSanitizer } from "@angular/platform-browser";
 
 interface ShopData {
   _id: string;
@@ -38,8 +37,9 @@ export class OwnerService {
   url = environment.url;
   private _shops = new BehaviorSubject<Shop[]>([]);
   private _shopProducts = new BehaviorSubject<ShopProduct[]>([]);
+  private _allProducts = new BehaviorSubject<ShopProduct[]>([]);
 
-  constructor(private http: HttpClient, private sanitization: DomSanitizer) {}
+  constructor(private http: HttpClient) {}
 
   get allShops() {
     return this._shops.asObservable();
@@ -47,6 +47,10 @@ export class OwnerService {
 
   get allShopProducts() {
     return this._shopProducts.asObservable();
+  }
+
+  get allProducts() {
+    return this._allProducts.asObservable();
   }
 
   // *************Shop*******************
@@ -202,7 +206,7 @@ export class OwnerService {
 
   fetchShopProducts(shopId) {
     return this.http
-      .get<ShopProductDate[]>(`${this.url}/api/shop/allProducts/${shopId}`)
+      .get<ShopProductDate[]>(`${this.url}/api/shop/allShopProducts/${shopId}`)
       .pipe(
         map((resList) => {
           let productsArr: ShopProduct[] = [];
@@ -261,4 +265,34 @@ export class OwnerService {
       })
     );
   }
+
+
+  fetchAllProducts() {
+    return this.http.get<ShopProductDate[]>(`${this.url}/api/shop/allProducts`).pipe(
+      map((resList) => {
+        const productsArr: ShopProduct[] = [];
+        resList.map((product) => {
+          productsArr.push(
+            new ShopProduct(
+                product._id,
+                product.shopId,
+                product.productName,
+                product.productDesc,
+                product.productKeyword,
+                product.price,
+                product.available,
+                product.units,
+                product.productImage
+            )
+          );
+        });
+
+        return productsArr;
+      }),
+      tap((products) => {
+        this._allProducts.next(products);
+      })
+    );
+  }
+
 }

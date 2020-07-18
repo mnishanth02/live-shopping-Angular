@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {  ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
 import { AddNewProductPageRoutingModule } from './add-new-product-routing.module';
 
 import { AddNewProductPage } from './add-new-product.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     IonicModule,
+    SharedModule,
     AddNewProductPageRoutingModule
   ],
   declarations: [AddNewProductPage]
